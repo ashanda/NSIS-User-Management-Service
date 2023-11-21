@@ -40,8 +40,37 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-    ],
+    
 
+    // FOR USER
+
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'user-api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
+
+        //  FOR ADMIN
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+    
+        'admin-api' => [
+            'driver' => 'passport',
+            'provider' => 'admins',
+        ],
+
+        'api' => [
+        'driver' => 'passport',
+        'provider' => 'users',
+         ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -65,6 +94,12 @@ return [
             'model' => App\Models\User::class,
         ],
 
+     // ADD Admin PROVIDER 
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],    
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
