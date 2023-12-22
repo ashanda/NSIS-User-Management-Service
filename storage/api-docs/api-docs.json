@@ -128,13 +128,12 @@
         "/api/register": {
             "post": {
                 "tags": [
-                    "Authentication"
+                    "Permissions"
                 ],
                 "summary": "Register",
                 "description": "Register to system.",
                 "operationId": "register",
                 "requestBody": {
-                    "description": "Pet object that needs to be added to the store",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -151,6 +150,11 @@
                                         "type": "string",
                                         "example": "Jhon Doe"
                                     },
+                                    "user_type": {
+                                        "description": "User Type",
+                                        "type": "string",
+                                        "example": "0"
+                                    },
                                     "email": {
                                         "description": "User Email",
                                         "type": "string",
@@ -165,6 +169,11 @@
                                         "description": "User confirm password",
                                         "type": "string",
                                         "example": "12345678"
+                                    },
+                                    "client_secret": {
+                                        "description": "Client Secret",
+                                        "type": "string",
+                                        "example": "ZnFeVUJL3vJNz@QR9D#8NKgkbUqbFam45pc$d4Qh"
                                     }
                                 },
                                 "type": "object"
@@ -179,7 +188,12 @@
                     "400": {
                         "description": "Invalid input"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         }
     },
