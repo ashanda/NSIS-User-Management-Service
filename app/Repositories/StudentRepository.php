@@ -114,10 +114,10 @@ foreach ($collection as $item) {
         'id' => $item['id'],
     ];
 
-    $data['studentDetail'][] = $studentDetail;
-    $data['studentParent'][] = $studentParent;
-    $data['studentSibling'][] = $studentSibling;
-    $data['studentDocument'][] = $studentDocument;
+    $data['studentDetail'] = $studentDetail;
+    $data['studentParent'] = $studentParent;
+    $data['studentSibling'] = $studentSibling;
+    $data['studentDocument'] = $studentDocument;
 }
 
 return $data;
