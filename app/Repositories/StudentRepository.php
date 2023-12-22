@@ -18,25 +18,19 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
     {
         $filter = $this->getFilterData($filterData);
 
-       $query = StudentDetail::join('student_parents', 'student_details.student_id', '=', 'student_parents.student_id')
-            ->join('student_siblings', 'student_details.student_id', '=', 'student_siblings.student_id')
-            ->join('student_documents', 'student_details.student_id', '=', 'student_documents.student_id')
-            ->select(
-                'student_details.*',
-                'student_parents.*',
-                'student_siblings.*',
-                'student_documents.*'
-            )
-        ->get();
+       $collection = collect(StudentDetail::join('student_parents', 'student_details.student_id', '=', 'student_parents.student_id')
+        ->join('student_siblings', 'student_details.student_id', '=', 'student_siblings.student_id')
+        ->join('student_documents', 'student_details.student_id', '=', 'student_documents.student_id')
+        ->select(
+            'student_details.*',
+            'student_parents.*',
+            'student_siblings.*',
+            'student_documents.*'
+        )
+        ->get()
+        ->toArray());
 
-        // if (!empty($filter['search'])) {
-        //     $query->where(function ($query) use ($filter) {
-        //         $searched = '%' . $filter['search'] . '%';
-        //         $query->where('student', 'like', $searched);
-        //     });
-        // }
-
-        return $query;
+    return $collection;
 
         
         //return  $permissions = StudentDetail::get();
