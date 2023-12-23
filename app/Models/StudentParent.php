@@ -12,7 +12,7 @@ class StudentParent extends Model
      protected $fillable = [
         'organization_id',
         'student_id',
-                'sp_father_first_name',
+        'sp_father_first_name',
         'sp_father_last_name',
         'sp_father_nic',
         'sp_father_higher_education_qualification',
