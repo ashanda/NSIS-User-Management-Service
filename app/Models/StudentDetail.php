@@ -31,7 +31,7 @@ class StudentDetail extends Model
         'sd_religion',
         'sd_ethnicity',
         'sd_birth_certificate_number',
-        'sd_profile_picture_path',
+        'sd_profile_picture',
         'sd_health_conditions',
         'sd_admission_date',
         'sd_admission_payment_amount',
