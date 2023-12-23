@@ -33,6 +33,7 @@ $collection = collect(StudentDetail::join('student_parents', 'student_details.st
 
 foreach ($collection as $item) {
     $studentDetail = [
+        'id' => $item['id'],
         'student_id' => $item['student_id'],
         'organization_id' => $item['organization_id'],
         'admission_no' => $item['sd_admission_no'],
@@ -65,7 +66,6 @@ foreach ($collection as $item) {
         'academic_status' => $item['sd_academic_status'],
         'updated_at' => $item['updated_at'],
         'created_at' => $item['created_at'],
-        'id' => $item['id'],
     ];
 
     // $studentParent = [
