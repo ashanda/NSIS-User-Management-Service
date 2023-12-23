@@ -140,7 +140,7 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
         return array_merge($defaultArgs, $filterData);
     }
 
-    public function getById(int $id): ?StudentDetail
+    public function getById($id): ?StudentDetail
     {
         $student = StudentDetail::with('documents')->where('student_id', $id)->first();
 
