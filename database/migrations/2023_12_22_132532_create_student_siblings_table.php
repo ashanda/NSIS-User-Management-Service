@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('organization_id');
             $table->string('student_id');
-            $table->string('details');
+            $table->string('ss_details');
             $table->timestamps();
         });
     }

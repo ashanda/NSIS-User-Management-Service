@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('organization_id');
             $table->string('student_id');
-            $table->string('profile_picture')->nullable();
-            $table->string('birth_certificate')->nullable();
-            $table->string('nic_father')->nullable();
-            $table->string('nic_mother')->nullable();
-            $table->string('marriage_certificate')->nullable();
-            $table->string('permission_letter')->nullable();
-            $table->string('leaving_certificate')->nullable();
+            $table->string('sd_profile_picture')->nullable();
+            $table->string('sd_birth_certificate')->nullable();
+            $table->string('sd_nic_father')->nullable();
+            $table->string('sd_nic_mother')->nullable();
+            $table->string('sd_marriage_certificate')->nullable();
+            $table->string('sd_permission_letter')->nullable();
+            $table->string('sd_leaving_certificate')->nullable();
             $table->timestamps();
         });
     }
