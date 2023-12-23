@@ -37,4 +37,10 @@ class StudentDetail extends Model
         'sd_admission_payment_amount',
         'sd_no_of_installments',
     ];
+
+
+     public function documents()
+    {
+        return $this->hasMany(StudentDocument::class, 'student_id', 'student_id');
+    }
 }
