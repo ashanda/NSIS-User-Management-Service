@@ -12,12 +12,12 @@ class StudentDocument extends Model
        protected $fillable = [
         'organization_id',
         'student_id',
-        'profile_picture',
-        'birth_certificate',
-        'nic_father',
-        'nic_mother',
-        'marriage_certificate',
-        'permission_letter',
-        'leaving_certificate',
+        'sd_profile_picture',
+        'sd_birth_certificate',
+        'sd_nic_father',
+        'sd_nic_mother',
+        'sd_marriage_certificate',
+        'sd_permission_letter',
+        'sd_leaving_certificate',
     ];
 }
