@@ -15,11 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('organization_id');
             $table->string('student_id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('gender');
-            $table->date('date_of_birth');
-            $table->string('school');
+            $table->string('details');
             $table->timestamps();
         });
     }
