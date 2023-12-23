@@ -53,7 +53,7 @@ foreach ($collection as $item) {
         'religion' => $item['sd_religion'],
         'ethnicity' => $item['sd_ethnicity'],
         'birth_certificate_number' => $item['sd_birth_certificate_number'],
-        'profile_picture_path' => $item['sd_profile_picture_path'],
+        'profile_picture_path' => $item['sd_profile_picture'],
         'health_conditions' => $item['sd_health_conditions'],
         'admission_date' => $item['sd_admission_date'],
         'admission_payment_amount' => $item['sd_admission_payment_amount'],
