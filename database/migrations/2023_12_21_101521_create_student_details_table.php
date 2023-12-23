@@ -33,16 +33,16 @@ return new class extends Migration
             $table->string('sd_religion');
             $table->string('sd_ethnicity');
             $table->string('sd_birth_certificate_number');
-            $table->string('sd_profile_picture_path')->nullable();
+            $table->string('sd_profile_picture')->nullable();
             $table->text('sd_health_conditions')->nullable();
             $table->date('sd_admission_date');
             $table->decimal('sd_admission_payment_amount', 10, 2);
             $table->integer('sd_no_of_installments');
-            $table->string('sd_admission_status');
-            $table->decimal('sd_school_fee', 10, 2);
-            $table->decimal('sd_total_due', 10, 2);
-            $table->string('sd_payment_status');
-            $table->string('sd_academic_status');
+            $table->integer('sd_admission_status')->default(0);
+            $table->decimal('sd_school_fee', 10, 2)->nullable();
+            $table->decimal('sd_total_due', 10, 2)->nullable();
+            $table->string('sd_payment_status')->default(0);
+            $table->string('sd_academic_status')->default(0);
             $table->timestamps();
         });
     }

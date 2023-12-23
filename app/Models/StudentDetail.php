@@ -36,10 +36,5 @@ class StudentDetail extends Model
         'sd_admission_date',
         'sd_admission_payment_amount',
         'sd_no_of_installments',
-        'sd_admission_status',
-        'sd_school_fee',
-        'sd_total_due',
-        'sd_payment_status',
-        'sd_academic_status',
     ];
 }
