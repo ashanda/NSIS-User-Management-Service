@@ -173,7 +173,7 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
     return $collection;
 }
 
-public function update(array $data, int $studentId): ?object 
+public function update(array $data, $studentId): ?object 
 {
     // Fetch existing records
     $studentDetail = StudentDetail::find($studentId);
