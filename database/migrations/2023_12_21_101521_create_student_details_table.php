@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('student_id')->unique();
             $table->unsignedBigInteger('organization_id');
             $table->string('sd_year_grade_class_id');
-            $table->string('sd_admission_no');
+            $table->string('sd_admission_no')->unique();
             $table->string('sd_first_name');
             $table->string('sd_last_name');
             $table->string('sd_name_with_initials');

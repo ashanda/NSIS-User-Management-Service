@@ -45,7 +45,7 @@ class StudentController extends Controller
     public function index(): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->studentRepository->getAll(request()->all()), 'User Activity fetched successfully.');
+            return $this->responseSuccess($this->studentRepository->getAll(request()->all()), 'User fetched successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -59,7 +59,7 @@ class StudentController extends Controller
      *     description="Create user activity",
      *     security={{"bearer":{}}},
      *     @OA\RequestBody(
-     *         description="User Activity objects",
+     *         description="User objects",
      *         required=true,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
@@ -88,7 +88,7 @@ class StudentController extends Controller
     public function store(StudentCreateRequest $request): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->studentRepository->create($request->all()), 'User Activity created successfully.');
+            return $this->responseSuccess($this->studentRepository->create($request->all()), 'User created successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -116,14 +116,14 @@ class StudentController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="User Activity not found"
+     *         description="User not found"
      *     )
      * )
      */
     public function show($id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->studentRepository->getById($id), 'User Activity fetched successfully.');
+            return $this->responseSuccess($this->studentRepository->getById($id), 'User fetched successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -156,7 +156,7 @@ class StudentController extends Controller
      *         )
      *     ),
      *     @OA\RequestBody(
-     *         description="User Activity objects",
+     *         description="User objects",
      *         required=true,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
@@ -164,9 +164,9 @@ class StudentController extends Controller
      *                 type="object",
      *                 @OA\Property(
      *                     property="id",
-     *                     description="User Activity id",
+     *                     description="User id",
      *                     type="integer",
-     *                     example="User Activity id"
+     *                     example="User id"
      *                 ),
      *             )
      *         ),
@@ -184,7 +184,7 @@ class StudentController extends Controller
     public function update(StudentUpdateRequest $request, int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->studentRepository->update($id, $request->all()), 'User Activity updated successfully.');
+            return $this->responseSuccess($this->studentRepository->update($id, $request->all()), 'User updated successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -212,14 +212,14 @@ class StudentController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="User Activity not found"
+     *         description="User not found"
      *     )
      * )
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy($id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->studentRepository->delete($id), 'User Activity deleted successfully.');
+            return $this->responseSuccess($this->studentRepository->delete($id), 'User deleted successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
