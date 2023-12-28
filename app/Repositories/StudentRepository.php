@@ -122,7 +122,7 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
 
 // return $data;
 
-    return  $permissions = StudentDetail::get();
+    return  $permissions = StudentDetail::where('sd_academic_status', 1)->get();
 
         
         //return  $permissions = StudentDetail::get();
@@ -142,7 +142,7 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
 
     public function getById($id): ?StudentDetail
     {
-        $student = StudentDetail::with('documents')->where('student_id', $id)->first();
+       $student = StudentDetail::with('parent_data')->with('documents')->where('student_id', $id)->first();
 
         if (empty($student)) {
             throw new Exception("User student does not exist.", Response::HTTP_NOT_FOUND);
@@ -186,12 +186,12 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
         return $student;
     }
 
-    public function delete(int $id): ?StudentDetail
+    public function delete($id): ?StudentDetail
     {
         $student = $this->getById($id);
-        $deleted = $student->delete();
+        $student->update(['sd_academic_status' => 0]);
 
-        if (!$deleted) {
+        if (!$student) {
             throw new Exception("User student could not be deleted.", Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 

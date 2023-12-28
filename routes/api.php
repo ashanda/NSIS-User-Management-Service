@@ -9,6 +9,10 @@ use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\UserAssigningController;
 use App\Http\Controllers\UserLevelController;
 use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\MasterClassController;
+use App\Http\Controllers\MasterGradeController;
+use App\Http\Controllers\MasterExtracurricularController;
+use App\Http\Controllers\YearClassGradeController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +46,16 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/user_assignees', UserAssigningController::class);
 
     Route::apiResource('/students', StudentController::class);
+
+    Route::apiResource('/master_class', MasterClassController::class);
+
+    Route::apiResource('/master_grade', MasterGradeController::class);
+
+    Route::apiResource('/master_extracurricular', MasterExtracurricularController::class);
+
+    Route::apiResource('/year_grade_class', YearClassGradeController::class);
+
+    
     
     
     

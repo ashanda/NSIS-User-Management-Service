@@ -43,4 +43,10 @@ class StudentDetail extends Model
     {
         return $this->hasMany(StudentDocument::class, 'student_id', 'student_id');
     }
+
+
+     public function parent_data()
+    {
+        return $this->hasMany(StudentParent::class, 'student_id', 'student_id');
+    }
 }
