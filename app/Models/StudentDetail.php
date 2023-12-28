@@ -49,4 +49,9 @@ class StudentDetail extends Model
     {
         return $this->hasMany(StudentParent::class, 'student_id', 'student_id');
     }
+
+     public function sibling_data()
+    {
+        return $this->hasMany(StudentSibling::class, 'student_id', 'student_id');
+    }
 }

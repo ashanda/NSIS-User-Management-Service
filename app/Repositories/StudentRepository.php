@@ -142,7 +142,7 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
 
     public function getById($id): ?StudentDetail
     {
-       $student = StudentDetail::with('parent_data')->with('documents')->where('student_id', $id)->first();
+       $student = StudentDetail::with('parent_data')->with('sibling_data')->with('documents')->where('student_id', $id)->first();
 
         if (empty($student)) {
             throw new Exception("User student does not exist.", Response::HTTP_NOT_FOUND);
@@ -173,18 +173,40 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
     return $collection;
 }
 
-    public function update(int $id, array $data): ?StudentDetail
-    {
-        $student = $this->getById($id);
+public function update(array $data, int $studentId): ?object 
+{
+    // Fetch existing records
+    $studentDetail = StudentDetail::find($studentId);
+    $studentParent = StudentParent::find($studentId);
+    $studentSibling = StudentSibling::find($studentId);
+    $studentDocument = StudentDocument::find($studentId);
 
-        $updated = $student->update($this->prepareForDB($data, $student));
-
-        if ($updated) {
-            $student = $this->getById($id);
-        }
-
-        return $student;
+    // Check if any of the models is null
+    if ($studentDetail === null || $studentParent === null || $studentSibling === null || $studentDocument === null) {
+        return null;
     }
+
+    // Update the existing records with the new data
+    $studentDetail->update($data);
+    $studentParent->update($data);
+    $studentSibling->update($data);
+    $studentDocument->update($data);
+
+    // Fetch the updated records (optional, depending on your needs)
+    $studentDetail = StudentDetail::find($studentId);
+    $studentParent = StudentParent::find($studentId);
+    $studentSibling = StudentSibling::find($studentId);
+    $studentDocument = StudentDocument::find($studentId);
+
+    $collection = collect([
+        'studentDetail' => $studentDetail,
+        'studentParent' => $studentParent,
+        'studentSibling' => $studentSibling,
+        'studentDocument' => $studentDocument,
+    ]);
+
+    return $collection;
+}
 
      public function delete($id): ?StudentDetail
         {
