@@ -186,17 +186,24 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
         return $student;
     }
 
-    public function delete($id): ?StudentDetail
-    {
-        $student = $this->getById($id);
-        $student->update(['sd_academic_status' => 0]);
-
-        if (!$student) {
-            throw new Exception("User student could not be deleted.", Response::HTTP_INTERNAL_SERVER_ERROR);
+     public function delete($id): ?StudentDetail
+        {
+            $student = StudentDetail::where('student_id', $id)->first();
+        
+            if (!$student) {
+                throw new Exception("User student could not be found.", Response::HTTP_NOT_FOUND);
+            }
+        
+            // Update the student's academic status
+            $updateResult = StudentDetail::where('id', $student->id)->update(['sd_academic_status' => 0]);
+        
+            if ($updateResult === false) {
+                throw new Exception("Failed to update academic status.", Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        
+            // Return the deleted student instance
+            return $student;
         }
-
-        return $student;
-    }
 
     public function prepareForDB(array $data, ?StudentDetail $student = null): array
     {
