@@ -175,11 +175,13 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
 
 public function update(array $data, $studentId): ?object 
 {
+   
     // Fetch existing records
-    $studentDetail = StudentDetail::find($studentId);
-    $studentParent = StudentParent::find($studentId);
-    $studentSibling = StudentSibling::find($studentId);
-    $studentDocument = StudentDocument::find($studentId);
+    $studentDetail = StudentDetail::where('student_id',$studentId);
+  
+    $studentParent = StudentParent::where('student_id',$studentId);
+    $studentSibling = StudentSibling::where('student_id',$studentId);
+    $studentDocument = StudentDocument::where('student_id',$studentId);
 
     // Check if any of the models is null
     if ($studentDetail === null || $studentParent === null || $studentSibling === null || $studentDocument === null) {
@@ -193,10 +195,10 @@ public function update(array $data, $studentId): ?object
     $studentDocument->update($data);
 
     // Fetch the updated records (optional, depending on your needs)
-    $studentDetail = StudentDetail::find($studentId);
-    $studentParent = StudentParent::find($studentId);
-    $studentSibling = StudentSibling::find($studentId);
-    $studentDocument = StudentDocument::find($studentId);
+    $studentDetail = StudentDetail::where('student_id',$studentId);
+    $studentParent = StudentParent::where('student_id',$studentId);
+    $studentSibling = StudentSibling::where('student_id',$studentId);
+    $studentDocument = StudentDocument::where('student_id',$studentId);
 
     $collection = collect([
         'studentDetail' => $studentDetail,
@@ -207,6 +209,7 @@ public function update(array $data, $studentId): ?object
 
     return $collection;
 }
+
 
      public function delete($id): ?StudentDetail
         {
