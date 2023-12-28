@@ -11,7 +11,7 @@ interface StudentInterface {
 
     public function create(array $data): object|null;
 
-    public function update(int $id, array $data): object|null;
+    public function update(array $data, int $studentId): object|null;
 
     public function delete($id): object|null;
 }
