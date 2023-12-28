@@ -181,7 +181,7 @@ class StudentController extends Controller
      *     )
      * )
      */
-    public function update(StudentUpdateRequest $request, int $id): JsonResponse
+    public function update(StudentUpdateRequest $request, $id): JsonResponse
     {
         try {
             return $this->responseSuccess($this->studentRepository->update($id, $request->all()), 'User updated successfully.');
