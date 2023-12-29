@@ -176,6 +176,8 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
 public function update(array $data, $studentId): ?object 
 {
     // Fetch existing records
+    $studentData = StudentDetail::where('student_id',$studentId)->first();
+    $studentId = $studentData->id;
     $studentDetail = StudentDetail::find($studentId);
     $studentParent = StudentParent::find($studentId);
     $studentSibling = StudentSibling::find($studentId);
@@ -207,6 +209,7 @@ public function update(array $data, $studentId): ?object
 
     return $collection;
 }
+
 
 
      public function delete($id): ?StudentDetail
