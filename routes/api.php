@@ -47,11 +47,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('/students', StudentController::class);
 
-    Route::apiResource('/master_class', MasterClassController::class);
+    Route::apiResource('/class', MasterClassController::class);
 
-    Route::apiResource('/master_grade', MasterGradeController::class);
+    Route::apiResource('/grade', MasterGradeController::class);
 
-    Route::apiResource('/master_extracurricular', MasterExtracurricularController::class);
+    Route::apiResource('/extracurricular', MasterExtracurricularController::class);
 
     Route::apiResource('/year_grade_class', YearClassGradeController::class);
 
