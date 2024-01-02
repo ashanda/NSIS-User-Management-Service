@@ -176,12 +176,17 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
 public function update(array $data, $studentId): ?object 
 {
     // Fetch existing records
-    $studentData = StudentDetail::where('student_id',$studentId)->first();
-    $studentId = $studentData->id;
-    $studentDetail = StudentDetail::find($studentId);
-    $studentParent = StudentParent::find($studentId);
-    $studentSibling = StudentSibling::find($studentId);
-    $studentDocument = StudentDocument::find($studentId);
+    $studentDetails = StudentDetail::where('student_id',$studentId)->first();
+    $studentParents = StudentParent::where('student_id',$studentId)->first();
+    $studentSiblings = StudentSibling::where('student_id',$studentId)->first();
+    $studentDocuments = StudentDocument::where('student_id',$studentId)->first();
+    
+    
+    $studentDetail = StudentDetail::find($studentDetails->id);
+    $studentParent = StudentParent::find($studentParents->id);
+    $studentSibling = StudentSibling::find($studentSiblings->id);
+    $studentDocument = StudentDocument::find($studentDocuments->id);
+
 
     // Check if any of the models is null
     if ($studentDetail === null || $studentParent === null || $studentSibling === null || $studentDocument === null) {
@@ -195,10 +200,10 @@ public function update(array $data, $studentId): ?object
     $studentDocument->update($data);
 
     // Fetch the updated records (optional, depending on your needs)
-    $studentDetail = StudentDetail::find($studentId);
-    $studentParent = StudentParent::find($studentId);
-    $studentSibling = StudentSibling::find($studentId);
-    $studentDocument = StudentDocument::find($studentId);
+    $studentDetail = StudentDetail::find($studentDetails->id);
+    $studentParent = StudentParent::find($studentParents->id);
+    $studentSibling = StudentSibling::find($studentSiblings->id);
+    $studentDocument = StudentDocument::find($studentDocuments->id);
 
     $collection = collect([
         'studentDetail' => $studentDetail,
