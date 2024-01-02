@@ -22,7 +22,6 @@ class MasterGradeUpdateRequest extends ApiFormRequest
     public function rules()
     {
         return [
-            'organization_id' => 'required|numeric',
             'grade_name' => 'required',
         ];
     }
