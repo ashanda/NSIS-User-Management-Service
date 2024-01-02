@@ -56,7 +56,7 @@ class MasterGradeRepository implements MasterGradeInterface, DBPreparableInterfa
         return MasterGrade::create($data);
     }
 
-    public function update(int $id, array $data): ?MasterGrade
+    public function update(array $data, int $id): ?MasterGrade
     {
         $master_grade = $this->getById($id);
 
@@ -84,9 +84,7 @@ class MasterGradeRepository implements MasterGradeInterface, DBPreparableInterfa
     public function prepareForDB(array $data, ?MasterGrade $master_grade = null): array
     {
         return [
-            'organization_id' => $data['organization_id'],
             'grade_name' => $data['grade_name'],
-
         ];
     }
 
