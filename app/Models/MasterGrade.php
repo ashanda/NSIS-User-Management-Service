@@ -10,8 +10,6 @@ class MasterGrade extends Model
     use HasFactory;
     protected $connection = 'core_service';
     protected $fillable = [
-        'organization_id',
         'grade_name',
-
     ];
 }
