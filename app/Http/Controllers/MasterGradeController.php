@@ -25,7 +25,7 @@ class MasterGradeController extends Controller
     public function index(): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->mastergradeRepository->getAll(request()->all()), 'Master grade fetched successfully.');
+            return $this->responseSuccess($this->mastergradeRepository->getAll(request()->all()), 'Grade fetched successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -35,7 +35,7 @@ class MasterGradeController extends Controller
     public function store(MasterGradeCreateRequest $request): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->mastergradeRepository->create($request->all()), 'Master grade created successfully.');
+            return $this->responseSuccess($this->mastergradeRepository->create($request->all()), 'Grade created successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -45,7 +45,7 @@ class MasterGradeController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->mastergradeRepository->getById($id), 'Master grade fetched successfully.');
+            return $this->responseSuccess($this->mastergradeRepository->getById($id), 'Grade fetched successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -55,7 +55,7 @@ class MasterGradeController extends Controller
      public function update(MasterGradeUpdateRequest $request, int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->mastergradeRepository->update($id, $request->all()), 'Master grade updated successfully.');
+            return $this->responseSuccess($this->mastergradeRepository->update($request->all(), $id), 'grade updated successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -65,7 +65,7 @@ class MasterGradeController extends Controller
       public function destroy(int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->mastergradeRepository->delete($id), 'Master grade deleted successfully.');
+            return $this->responseSuccess($this->mastergradeRepository->delete($id), 'Grade deleted successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
