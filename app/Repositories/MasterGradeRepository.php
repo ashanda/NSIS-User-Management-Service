@@ -84,7 +84,9 @@ class MasterGradeRepository implements MasterGradeInterface, DBPreparableInterfa
     public function prepareForDB(array $data, ?MasterGrade $master_grade = null): array
     {
         return [
+            'organization_id' => $data['organization_id'],
             'grade_name' => $data['grade_name'],
+
         ];
     }
 
