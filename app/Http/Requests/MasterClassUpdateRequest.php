@@ -23,7 +23,7 @@ class MasterClassUpdateRequest extends ApiFormRequest
     {
         return [
            'organization_id' => 'required|numeric',
-           'class_name' => 'required|numeric',
+           'class_name' => 'required',
         ];
     }
 }
