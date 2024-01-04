@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('core_service')->create('master_extracurriculars', function (Blueprint $table) {
+        Schema::connection('core_service')->create('master_extracurricular', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('organization_id');
             $table->string('extracurricular_name');
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('master_extracurriculars');
+        Schema::dropIfExists('master_extracurris');
     }
 };
