@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Exception;
 use App\Interfaces\DBPreparableInterface;
-use App\Models\MasterExtracurricular;
+use App\Models\MasterExtracurri;
 use App\Interfaces\MasterExtracurricularInterface ;
 use Illuminate\Http\Response;
 
@@ -13,8 +13,8 @@ class MasterExtracurricularRepository implements MasterExtracurricularInterface,
     public function getAll(array $filterData)
     {
         $filter = $this->getFilterData($filterData);
-        $query = MasterExtracurricular::get(); 
-        // $query = MasterExtracurricular::orderBy($filter['orderBy'], $filter['order']);
+        $query = MasterExtracurri::get(); 
+        // $query = MasterExtracurri::orderBy($filter['orderBy'], $filter['order']);
 
         // if (!empty($filter['search'])) {
         //     $query->where(function ($query) use ($filter) {
@@ -38,9 +38,9 @@ class MasterExtracurricularRepository implements MasterExtracurricularInterface,
         return array_merge($defaultArgs, $filterData);
     }
 
-    public function getById(int $id): ?MasterExtracurricular
+    public function getById(int $id): ?MasterExtracurri
     {
-        $master_extracurricular = MasterExtracurricular::find($id);
+        $master_extracurricular = MasterExtracurri::find($id);
 
         if (empty($master_extracurricular)) {
             throw new Exception("Extracurricular does not exist.", Response::HTTP_NOT_FOUND);
@@ -49,14 +49,14 @@ class MasterExtracurricularRepository implements MasterExtracurricularInterface,
         return $master_extracurricular;
     }
 
-    public function create(array $data): ?MasterExtracurricular
+    public function create(array $data): ?MasterExtracurri
     {
         $data = $this->prepareForDB($data);
 
-        return MasterExtracurricular::create($data);
+        return MasterExtracurri::create($data);
     }
 
-    public function update(int $id, array $data): ?MasterExtracurricular
+    public function update(int $id, array $data): ?MasterExtracurri
     {
         $master_extracurricular = $this->getById($id);
 
@@ -69,7 +69,7 @@ class MasterExtracurricularRepository implements MasterExtracurricularInterface,
         return $master_extracurricular;
     }
 
-    public function delete(int $id): ?MasterExtracurricular
+    public function delete(int $id): ?MasterExtracurri
     {
         $master_extracurricular = $this->getById($id);
         $deleted = $master_extracurricular->delete();
@@ -81,7 +81,7 @@ class MasterExtracurricularRepository implements MasterExtracurricularInterface,
         return $master_extracurricular;
     }
 
-    public function prepareForDB(array $data, ?MasterExtracurricular $master_extracurricular = null): array
+    public function prepareForDB(array $data, ?MasterExtracurri $master_extracurricular = null): array
     {
         return [
             'organization_id' => $data['organization_id'],
