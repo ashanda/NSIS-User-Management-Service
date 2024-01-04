@@ -23,24 +23,7 @@ class PermissionController extends Controller
         $this->permissionRepository = $PermissionRepository;
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/permissions",
-     *     tags={"Permissions"},
-     *     summary="Get all permissions for REST API",
-     *     description="Multiple status values can be provided with comma separated string",
-     *     operationId="index",
-     *     security={{"bearer":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid status value"
-     *     )
-     * )
-     */
+  
 
 
     public function index() : JsonResponse
