@@ -23,7 +23,7 @@ class MasterExtracurricularCreateRequest extends ApiFormRequest
     {
         return [
             'organization_id' => 'required|numeric',
-            'extracurricular_name' => 'required|numeric',
+            'extracurricular_name' => 'required',
         ];
     }
 }
