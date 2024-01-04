@@ -22,23 +22,6 @@ class UserRoleController extends Controller
     }
 
 
-    /**
-     * @OA\Get(
-     *     path="/api/user_roles",
-     *     tags={"User Role"},
-     *     summary="Get all user_roles for REST API",
-     *     description="Multiple status values can be provided with comma separated string",
-     *     security={{"bearer":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid status value"
-     *     )
-     * )
-     */
     public function index(): JsonResponse
     {
         try {
@@ -48,41 +31,7 @@ class UserRoleController extends Controller
         }
     }
 
-    /**
-     * @OA\POST(
-     *     path="/api/user_roles",
-     *     tags={"User Role"},
-     *     summary="Create user-role",
-     *     description="Create user-role",
-     *     security={{"bearer":{}}},
-     *     @OA\RequestBody(
-     *         description="User role objects",
-     *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *            @OA\Schema(
-     *                 type="object",
-     *                 @OA\Property(
-     *                     property="role",
-     *                     description="User role title",
-     *                     type="string",
-     *                     example="User role title"
-     *                 ),
-     *                 
-     *                 required={"role"}
-     *             )
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid input"
-     *     )
-     * )
-     */
+  
     public function store(UserRoleCreateRequest $request): JsonResponse
     {
         try {
@@ -92,32 +41,7 @@ class UserRoleController extends Controller
         }
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/user_roles/{id}",
-     *     tags={"User Role"},
-     *     summary="Get user-role detail",
-     *     description="Get user-role detail",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="user-role id",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         )
-     *     ),
-     *     security={{"bearer":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User role not found"
-     *     )
-     * )
-     */
+
     public function show(int $id): JsonResponse
     {
         try {
@@ -127,65 +51,7 @@ class UserRoleController extends Controller
         }
     }
 
-    /**
-     * @OA\PUT(
-     *     path="/api/user_roles/{id}",
-     *     tags={"User Role"},
-     *     summary="Update user-role",
-     *     description="Update user-role",
-     *     security={{"bearer":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="user-role id",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="_method",
-     *         in="query",
-     *         description="request method",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string",
-     *             default="PUT"
-     *         )
-     *     ),
-     *     @OA\RequestBody(
-     *         description="User role objects",
-     *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                 type="object",
-     *                 @OA\Property(
-     *                     property="id",
-     *                     description="User role id",
-     *                     type="integer",
-     *                     example="User role id"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="role",
-     *                     description="User role title",
-     *                     type="string",
-     *                     example="User role title"
-     *                 ),
-     *                 required={"role"}
-     *             )
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid input"
-     *     )
-     * )
-     */
+    
     public function update(UserRoleUpdateRequest $request, int $id): JsonResponse
     {
         try {
@@ -195,32 +61,7 @@ class UserRoleController extends Controller
         }
     }
 
-    /**
-     * @OA\DELETE(
-     *     path="/api/user_roles/{id}",
-     *     tags={"User Role"},
-     *     summary="Delete user-role",
-     *     description="Delete user-role",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="user-role id",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         )
-     *     ),
-     *     security={{"bearer":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User role not found"
-     *     )
-     * )
-     */
+    
     public function destroy(int $id): JsonResponse
     {
         try {
