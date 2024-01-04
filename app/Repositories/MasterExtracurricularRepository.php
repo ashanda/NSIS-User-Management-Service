@@ -43,7 +43,7 @@ class MasterExtracurricularRepository implements MasterExtracurricularInterface,
         $master_extracurricular = MasterExtracurricular::find($id);
 
         if (empty($master_extracurricular)) {
-            throw new Exception("Master extracurricular does not exist.", Response::HTTP_NOT_FOUND);
+            throw new Exception("Extracurricular does not exist.", Response::HTTP_NOT_FOUND);
         }
 
         return $master_extracurricular;
@@ -75,7 +75,7 @@ class MasterExtracurricularRepository implements MasterExtracurricularInterface,
         $deleted = $master_extracurricular->delete();
 
         if (!$deleted) {
-            throw new Exception("Master extracurricular could not be deleted.", Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new Exception("Extracurricular could not be deleted.", Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $master_extracurricular;

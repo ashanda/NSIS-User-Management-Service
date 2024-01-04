@@ -25,7 +25,7 @@ class MasterExtracurricularController extends Controller
     public function index(): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->masterextracurricularRepository->getAll(request()->all()), 'Master extracurricular fetched successfully.');
+            return $this->responseSuccess($this->masterextracurricularRepository->getAll(request()->all()), 'Extracurricular fetched successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -35,7 +35,7 @@ class MasterExtracurricularController extends Controller
     public function store(MasterExtracurricularCreateRequest $request): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->masterextracurricularRepository->create($request->all()), 'Master extracurricular created successfully.');
+            return $this->responseSuccess($this->masterextracurricularRepository->create($request->all()), 'Extracurricular created successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -45,7 +45,7 @@ class MasterExtracurricularController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->masterextracurricularRepository->getById($id), 'Master extracurricular fetched successfully.');
+            return $this->responseSuccess($this->masterextracurricularRepository->getById($id), 'Extracurricular fetched successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -55,7 +55,7 @@ class MasterExtracurricularController extends Controller
      public function update(MasterExtracurricularUpdateRequest $request, int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->masterextracurricularRepository->update($id, $request->all()), 'Master extracurricular updated successfully.');
+            return $this->responseSuccess($this->masterextracurricularRepository->update($id, $request->all()), 'Extracurricular updated successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -65,7 +65,7 @@ class MasterExtracurricularController extends Controller
       public function destroy(int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->masterextracurricularRepository->delete($id), 'Master extracurricular deleted successfully.');
+            return $this->responseSuccess($this->masterextracurricularRepository->delete($id), 'Extracurricular deleted successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
