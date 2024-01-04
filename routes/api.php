@@ -51,7 +51,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('/grade', MasterGradeController::class);
 
-    Route::apiResource('/extracurricular', MasterExtracurricularController::class);
+    Route::apiResource('/extra_curricular', MasterExtracurricularController::class);
 
     Route::apiResource('/year_grade_class', YearClassGradeController::class);
 
