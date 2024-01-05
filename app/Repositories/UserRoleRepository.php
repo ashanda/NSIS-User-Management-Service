@@ -25,7 +25,7 @@ class UserRoleRepository implements UserRoleInterface, DBPreparableInterface {
         //         $query->where('role', 'like', $searched);
         //     });
         // }
-        return $query = UserRole::get();
+        return $query;
     }
 
     public function getFilterData(array $filterData): array

@@ -14,18 +14,18 @@ class UserRoleController extends Controller
 {
     use ResponseTrait;
 
-    public $userLevelRepository;
+    public $userRoleRepository;
 
-    public function __construct(UserRoleRepository $userLevelRepository)
+    public function __construct(UserRoleRepository $userRoleRepository)
     {
-        $this->userLevelRepository = $userLevelRepository;
+        $this->userRoleRepository = $userRoleRepository;
     }
 
 
     public function index(): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->userLevelRepository->getAll(request()->all()), 'User role fetched successfully.');
+            return $this->responseSuccess($this->userRoleRepository->getAll(request()->all()), 'User role fetched successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -35,7 +35,7 @@ class UserRoleController extends Controller
     public function store(UserRoleCreateRequest $request): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->userLevelRepository->create($request->all()), 'User role created successfully.');
+            return $this->responseSuccess($this->userRoleRepository->create($request->all()), 'User role created successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -45,7 +45,7 @@ class UserRoleController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->userLevelRepository->getById($id), 'User role fetched successfully.');
+            return $this->responseSuccess($this->userRoleRepository->getById($id), 'User role fetched successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -55,7 +55,7 @@ class UserRoleController extends Controller
     public function update(UserRoleUpdateRequest $request, int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->userLevelRepository->update($id, $request->all()), 'User role updated successfully.');
+            return $this->responseSuccess($this->userRoleRepository->update($id, $request->all()), 'User role updated successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
@@ -65,7 +65,7 @@ class UserRoleController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->userLevelRepository->delete($id), 'User role deleted successfully.');
+            return $this->responseSuccess($this->userRoleRepository->delete($id), 'User role deleted successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
