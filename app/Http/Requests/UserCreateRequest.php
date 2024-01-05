@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class UserUpdateRequest extends ApiFormRequest
+class UserCreateRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
