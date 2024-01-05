@@ -14,4 +14,9 @@ class MasterGrade extends Model
         'grade_name',
 
     ];
+
+    public function yearGradeClasses()
+    {
+        return $this->hasMany(YearGradeClass::class, 'id');
+    }
 }

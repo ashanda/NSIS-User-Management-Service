@@ -142,7 +142,14 @@ class StudentRepository implements StudentInterface, DBPreparableInterface {
 
     public function getById($id): ?StudentDetail
     {
-       $student = StudentDetail::with('parent_data')->with('sibling_data')->with('documents')->with('year_class_data')->where('student_id', $id)->first();
+       $student = StudentDetail::with('parent_data')
+        ->with('sibling_data')
+        ->with('documents')
+        ->with(['year_class_data' => function ($query) {
+            $query->with(['grade', 'class']);
+        }])
+        ->where('student_id', $id)
+        ->first();
 
         if (empty($student)) {
             throw new Exception("User student does not exist.", Response::HTTP_NOT_FOUND);
