@@ -12,6 +12,7 @@ use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\MasterClassController;
 use App\Http\Controllers\MasterGradeController;
 use App\Http\Controllers\MasterExtracurricularController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearClassGradeController;
 
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [ProfileController::class,'logout']);
     Route::get('/permissions', [PermissionController::class,'index']);
 
+    Route::apiResource('/users', UserController::class);
 
     Route::apiResource('/user_levels', UserLevelController::class);
 
