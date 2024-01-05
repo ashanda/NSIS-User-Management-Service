@@ -9,7 +9,7 @@ interface UserInterface {
 
     public function getById(int $id): object|null;
 
-    public function create(array $data): object|null;
+    public function create(array $data): array;
 
     public function update(int $id, array $data): object|null;
 
