@@ -7,9 +7,9 @@ use App\Interfaces\DBPreparableInterface;
 use App\Models\User;
 use App\Interfaces\UserInterface ;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\PersonalAccessTokenResult;
+use Carbon\Carbon;
 
 class UserRepository implements UserInterface, DBPreparableInterface {
     public function getAll(array $filterData)
@@ -51,11 +51,17 @@ class UserRepository implements UserInterface, DBPreparableInterface {
         return $user_level;
     }
 
-    public function create(array $data): ?User
+    public function create(array $data): array
     {
-        $data = $this->prepareForDB($data);
+        $user = User::create($this->prepareForDB($data));
 
-        return User::create($data);
+        if (!$user) {
+            throw new Exception("Sorry, user does not registered, Please try again.", 500);
+        }
+
+        $tokenInstance = $this->createAuthToken($user);
+
+        return $this->getAuthData($user, $tokenInstance);
     }
 
     public function update(int $id, array $data): ?User
@@ -83,11 +89,27 @@ class UserRepository implements UserInterface, DBPreparableInterface {
         return $user_level;
     }
 
+    public function getAuthData(User $user, PersonalAccessTokenResult $tokenInstance)
+    {
+        return [
+            'access_token' => $tokenInstance->accessToken,
+            'expires_at'   => Carbon::parse($tokenInstance->token->expires_at)->toDateTimeString()
+        ];
+    }
+
+     public function createAuthToken(User $user): PersonalAccessTokenResult
+    {
+        return $user->createToken('authToken');
+    }
+
     public function prepareForDB(array $data, ?User $user_level = null): array
     {
         return [
-            'level' => $data['level'],
-            'title' => $data['title'],
+            'name' => $data['name'],
+            'user_type' => $data['user_type'],
+            'client_secret' => Hash::make($data['client_secret']),
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ];
     }
 
