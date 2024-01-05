@@ -43,7 +43,7 @@ class YearGradeClassRepository implements YearGradeClassInterface, DBPreparableI
         $year_grade_class = YearGradeClass::find($id);
 
         if (empty($year_grade_class)) {
-            throw new Exception("Master extracurricular does not exist.", Response::HTTP_NOT_FOUND);
+            throw new Exception("Year grade class relation does not exist.", Response::HTTP_NOT_FOUND);
         }
 
         return $year_grade_class;
@@ -75,7 +75,7 @@ class YearGradeClassRepository implements YearGradeClassInterface, DBPreparableI
         $deleted = $year_grade_class->delete();
 
         if (!$deleted) {
-            throw new Exception("Master extracurricular could not be deleted.", Response::HTTP_INTERNAL_SERVER_ERROR);
+            throw new Exception("Year grade class relation could not be deleted.", Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $year_grade_class;
@@ -88,7 +88,6 @@ class YearGradeClassRepository implements YearGradeClassInterface, DBPreparableI
             'organization_id' => $data['organization_id'],
             'master_grade_id' => $data['master_grade_id'],
             'master_class_id' => $data['master_class_id'],
-            'Total_number_of_students' => $data['Total_number_of_students'],
             'active_status' => $data['active_status'],
 
         ];
