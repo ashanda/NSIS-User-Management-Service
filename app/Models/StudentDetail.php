@@ -57,6 +57,6 @@ class StudentDetail extends Model
 
      public function year_class_data()
     {
-        return $this->belongsTo(YearGradeClass::class, 'id', 'sd_year_grade_class_id');
+        return $this->belongsTo(YearGradeClass::class, 'sd_year_grade_class_id', 'id');
     }
 }
