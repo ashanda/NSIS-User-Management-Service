@@ -15,7 +15,7 @@ class UserRepository implements UserInterface, DBPreparableInterface {
     public function getAll(array $filterData)
     {
         $filter = $this->getFilterData($filterData);
-        $query = User::get(); 
+        $query = User::with('user_type')->get(); 
         // $query = UserLevel::orderBy($filter['orderBy'], $filter['order']);
 
         // if (!empty($filter['search'])) {
