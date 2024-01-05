@@ -17,4 +17,14 @@ class YearGradeClass extends Model
         'master_class_id',
         'active_status',
     ];
+
+    public function grade()
+    {
+        return $this->belongsTo(MasterGrade::class, 'master_grade_id', 'id');
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(MasterClass::class, 'master_class_id', 'id');
+    }
 }

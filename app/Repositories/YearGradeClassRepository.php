@@ -13,7 +13,7 @@ class YearGradeClassRepository implements YearGradeClassInterface, DBPreparableI
     public function getAll(array $filterData)
     {
         $filter = $this->getFilterData($filterData);
-        $query = YearGradeClass::get(); 
+        $query = YearGradeClass::with('grade', 'class')->get(); 
         // $query = YearGradeClass::orderBy($filter['orderBy'], $filter['order']);
 
         // if (!empty($filter['search'])) {
