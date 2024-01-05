@@ -54,4 +54,9 @@ class StudentDetail extends Model
     {
         return $this->hasMany(StudentSibling::class, 'student_id', 'student_id');
     }
+
+     public function year_class_data()
+    {
+        return $this->belongsTo(YearGradeClass::class, 'id', 'sd_year_grade_class_id');
+    }
 }
