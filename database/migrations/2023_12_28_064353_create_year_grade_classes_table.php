@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('year');
             $table->string('master_grade_id');
             $table->string('master_class_id');
+            $table->string('monthly_fee');
             $table->string('Total_number_of_students');
             $table->integer('active_status');
             $table->timestamps();

@@ -88,6 +88,7 @@ class YearGradeClassRepository implements YearGradeClassInterface, DBPreparableI
             'organization_id' => $data['organization_id'],
             'master_grade_id' => $data['master_grade_id'],
             'master_class_id' => $data['master_class_id'],
+            'monthly_fee'     => $data['monthly_fee'],
             'active_status' => $data['active_status'],
 
         ];

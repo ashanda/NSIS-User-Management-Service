@@ -15,6 +15,7 @@ class YearGradeClass extends Model
         'year',
         'master_grade_id',
         'master_class_id',
+        'monthly_fee',
         'active_status',
     ];
 
@@ -26,5 +27,10 @@ class YearGradeClass extends Model
     public function class()
     {
         return $this->belongsTo(MasterClass::class, 'master_class_id', 'id');
+    }
+
+    public function studentDetails()
+    {
+        return $this->hasMany(StudentDetail::class, 'id', 'sd_year_grade_class_id');
     }
 }
