@@ -38,13 +38,13 @@ class FeesCalculationRepository implements FeesCalculationInterface {
                     DB::commit();
 
                     // All records were inserted successfully
-                    echo "All records inserted successfully!";
+                    return "All records inserted successfully!";
         } catch (\Exception $e) {
                 // An error occurred, rollback the transaction
                 DB::rollBack();
 
                 // Handle the exception (log it, return an error response, etc.)
-                echo "Error: " . $e->getMessage();
+                return "Error: " . $e->getMessage();
             }
 
     }
