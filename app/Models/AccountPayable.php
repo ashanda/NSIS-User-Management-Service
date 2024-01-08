@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class AccountPayable extends Model
 {
     use HasFactory;
+    protected $fillable = ['student_id', 'amount', 'type', 'eligibility', 'status'];
 }
