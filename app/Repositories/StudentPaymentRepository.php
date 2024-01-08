@@ -40,9 +40,9 @@ class StudentPaymentRepository implements StudentPaymentInterface, DBPreparableI
         return array_merge($defaultArgs, $filterData);
     }
 
-    public function getById(int $id): ?AccountPayable
+    public function getById($id): ?AccountPayable
     {
-        $account_payable = AccountPayable::find($id);
+        $account_payable = StudentDetail::with('studentDetail')->where('student_id',$id)->where('sd_academic_status',1)->first();
 
         if (empty($account_payable)) {
             throw new Exception("Payable account does not exist.", Response::HTTP_NOT_FOUND);
