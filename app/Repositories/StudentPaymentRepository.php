@@ -15,7 +15,7 @@ class StudentPaymentRepository implements StudentPaymentInterface, DBPreparableI
     public function getAll(array $filterData)
     {
         $filter = $this->getFilterData($filterData);
-        $query = StudentDetail::with('studentDetail')->get(); 
+        $query = StudentDetail::with('studentDetail')->where('sd_academic_status',1)->get(); 
         // $query = MasterClass::orderBy($filter['orderBy'], $filter['order']);
 
         // if (!empty($filter['search'])) {
