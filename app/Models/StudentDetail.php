@@ -70,4 +70,10 @@ class StudentDetail extends Model
     {
         return $this->belongsTo(MasterClass::class, 'id');
     }
+
+
+    public function yearGradeClass()
+    {
+        return $this->belongsTo(YearGradeClass::class, 'sd_year_grade_class_id', 'id');
+    }
 }

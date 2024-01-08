@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FeesCalculationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\MasterClassController;
 use App\Http\Controllers\MasterGradeController;
 use App\Http\Controllers\MasterExtracurricularController;
+use App\Http\Controllers\MonthlyFeeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearClassGradeController;
 
@@ -36,26 +38,21 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/profile', [ProfileController::class,'show']);
     Route::post('/logout', [ProfileController::class,'logout']);
     Route::get('/permissions', [PermissionController::class,'index']);
-
+    
     Route::apiResource('/users', UserController::class);
-
     Route::apiResource('/user_levels', UserLevelController::class);
-
     Route::apiResource('/user_roles', UserRoleController::class);
-
     Route::apiResource('/user_activities', UserActivityController::class);
-
     Route::apiResource('/user_assignees', UserAssigningController::class);
-
     Route::apiResource('/students', StudentController::class);
-
     Route::apiResource('/class', MasterClassController::class);
-
     Route::apiResource('/grade', MasterGradeController::class);
-
     Route::apiResource('/extra_curricular', MasterExtracurricularController::class);
-
     Route::apiResource('/year_grade_class', YearClassGradeController::class);
+
+    // end point of calculation
+    Route::get('/generate_monthly_fee', [FeesCalculationController::class, 'monthly_fee']);
+    Route::get('/generate_surcharge_fee', [FeesCalculationController::class, 'surcharge_fee']);
 
     
     

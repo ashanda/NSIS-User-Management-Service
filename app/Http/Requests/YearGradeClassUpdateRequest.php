@@ -26,6 +26,7 @@ class YearGradeClassUpdateRequest extends ApiFormRequest
           'organization_id' => 'required|numeric',
           'master_grade_id' => 'required|numeric',
           'master_class_id' => 'required|numeric',
+          'monthly_fee' => 'required|numeric',
           'active_status' => 'required|numeric',
         ];
     }

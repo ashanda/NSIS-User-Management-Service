@@ -66,15 +66,15 @@ class UserRepository implements UserInterface, DBPreparableInterface {
 
     public function update(int $id, array $data): ?User
     {
-        $user_level = $this->getById($id);
+        $user = $this->getById($id);
 
-        $updated = $user_level->update($this->prepareForDB($data, $user_level));
+        $updated = $user->update($this->prepareForDB($data, $user));
 
         if ($updated) {
-            $user_level = $this->getById($id);
+            $user = $this->getById($id);
         }
 
-        return $user_level;
+        return $user;
     }
 
     public function delete(int $id): ?User
