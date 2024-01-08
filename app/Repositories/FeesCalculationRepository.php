@@ -18,16 +18,16 @@ class FeesCalculationRepository implements FeesCalculationInterface {
                 DB::beginTransaction();
 
                 // Perform the join query
-                $monthlyPaymentEligibleLists = StudentDetail::join('year_grade_classes', 'student_details.sd_year_grade_class_id', '=', 'year_grade_classes.id')
-                    ->where('student_details.sd_academic_status', '=', 1)
-                    ->select('student_details.*', 'year_grade_classes.*')
-                    ->get();
-
+                $monthlyPaymentEligibleLists = StudentDetail::where('sd_academic_status', 1)
+                ->with('yearGradeClass')
+                ->get();
+                
                 // Loop through the result set and attempt to create records using the Payment model
                 foreach ($monthlyPaymentEligibleLists as $monthlyPaymentEligibleList) {
+
                     AccountPayable::create([
-                        'student_id' => $monthlyPaymentEligibleList->sd_student_id,
-                        'amount' => $monthlyPaymentEligibleList->monthly_fee,
+                        'student_id' => $monthlyPaymentEligibleList->student_id,
+                        'amount' => $monthlyPaymentEligibleList->yearGradeClass->monthly_fee,
                         'type' => 'monthly',
                         'eligibility' => 1,
                         'status' => 0,
