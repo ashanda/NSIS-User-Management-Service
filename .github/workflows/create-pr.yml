@@ -26,5 +26,4 @@ jobs:
           title: "Automated PR from feature-branch to dev"
           body: "This PR was automatically created."
           labels: "automated"
-          reviewers: "ashanda"
-          assignees: "ashanda"
+
