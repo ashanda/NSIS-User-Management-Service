@@ -7,7 +7,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 interface StudentPaymentInterface {
     public function getAll(array $filterData);
 
-    public function getById(int $id): object|null;
+    public function getById($id): object|null;
 
     public function update(int $id, array $data): object|null;
 
