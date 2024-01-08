@@ -36,4 +36,13 @@ class FeesCalculationController extends Controller
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         }
     }
+
+    public function user_payments($id): JsonResponse
+    {
+        try {
+            return $this->responseSuccess($this->feescalculationRepository->user_payments($id), 'User payments fetch successfully.');
+        } catch (Exception $exception) {
+            return $this->responseError([], $exception->getMessage(), $exception->getCode());
+        }
+    }
 }
