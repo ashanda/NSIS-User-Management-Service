@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class StudentPayment extends Model
 {
     use HasFactory;
+    protected $connection = 'student_service';
 }
