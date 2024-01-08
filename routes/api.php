@@ -16,7 +16,7 @@ use App\Http\Controllers\MasterExtracurricularController;
 use App\Http\Controllers\MonthlyFeeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearClassGradeController;
-
+use App\Models\StudentPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,7 +53,8 @@ Route::middleware('auth:api')->group(function () {
     // end point of calculation
     Route::get('/generate_monthly_fee', [FeesCalculationController::class, 'monthly_fee']);
     Route::get('/generate_surcharge_fee', [FeesCalculationController::class, 'surcharge_fee']);
-    Route::get('/student_payments', [FeesCalculationController::class, 'monthly_fee']);
+    
+    Route::apiResource('/student_payments', StudentPayment::class);
 
     
     
