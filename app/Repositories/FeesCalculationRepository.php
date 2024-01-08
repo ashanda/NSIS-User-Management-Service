@@ -55,7 +55,7 @@ class FeesCalculationRepository implements FeesCalculationInterface {
     }
 
     public function user_payments($id){
-        $query = StudentDetail::with('studentDetail')->where('student_id',$id)->where('sd_academic_status',1)->get(); 
+        $query = AccountPayable::where('student_id',$id)->where('status',0)->get(); 
         return $query;
     }
 
