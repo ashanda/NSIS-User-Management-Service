@@ -31,7 +31,7 @@ class StudentPaymentController extends Controller
         }
     }
 
-    public function show(int $id): JsonResponse
+    public function show($id): JsonResponse
     {
         try {
             return $this->responseSuccess($this->studentpaymentRepository->getById($id), 'Student payment fetched successfully.');
