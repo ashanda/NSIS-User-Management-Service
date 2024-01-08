@@ -10,4 +10,9 @@ class AccountPayable extends Model
     use HasFactory;
     protected $connection = 'student_service';
     protected $fillable = ['student_id', 'amount', 'type', 'eligibility', 'status'];
+
+    public function studentDetail()
+    {
+        return $this->belongsTo(StudentDetail::class, 'student_id', 'student_id');
+    }
 }

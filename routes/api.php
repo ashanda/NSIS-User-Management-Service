@@ -53,6 +53,7 @@ Route::middleware('auth:api')->group(function () {
     // end point of calculation
     Route::get('/generate_monthly_fee', [FeesCalculationController::class, 'monthly_fee']);
     Route::get('/generate_surcharge_fee', [FeesCalculationController::class, 'surcharge_fee']);
+    Route::get('/student_payments', [FeesCalculationController::class, 'monthly_fee']);
 
     
     
