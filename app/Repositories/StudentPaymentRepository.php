@@ -7,6 +7,7 @@ use App\Interfaces\DBPreparableInterface;
 use App\Models\AccountPayable;
 use App\Models\StudentPayment;
 use App\Interfaces\StudentPaymentInterface ;
+use App\Models\StudentDetail;
 use Illuminate\Http\Response;
 
 
@@ -14,7 +15,7 @@ class StudentPaymentRepository implements StudentPaymentInterface, DBPreparableI
     public function getAll(array $filterData)
     {
         $filter = $this->getFilterData($filterData);
-        $query = AccountPayable::with('studentDetail')->get(); 
+        $query = StudentDetail::with('studentDetail')->get(); 
         // $query = MasterClass::orderBy($filter['orderBy'], $filter['order']);
 
         // if (!empty($filter['search'])) {
