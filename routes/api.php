@@ -55,6 +55,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/generate_monthly_fee', [FeesCalculationController::class, 'monthly_fee']);
     Route::get('/generate_surcharge_fee', [FeesCalculationController::class, 'surcharge_fee']);
     Route::get('/user_payments/{id}', [FeesCalculationController::class, 'user_payments']);
+    Route::post('/user_payments', [FeesCalculationController::class, 'user_payment_update']);
+
+    Route::get('/user_invoices', [FeesCalculationController::class, 'current_user_pay']);
+
+    Route::get('/all_user_payments', [FeesCalculationController::class, 'all_user_payments']);
 
     Route::apiResource('/student_payments', StudentPaymentController::class);
 

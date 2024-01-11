@@ -9,4 +9,5 @@ class StudentPayment extends Model
 {
     use HasFactory;
     protected $connection = 'student_service';
+    protected $fillable = ['invoiceId', 'date', 'dueDate', 'outstandingBalance', 'total'];
 }

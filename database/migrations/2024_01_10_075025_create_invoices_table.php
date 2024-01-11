@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('student_service')->create('student_payments', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('invoiceId');
-            $table->date('date');
-            $table->date('dueDate');
-            $table->float('outstandingBalance', 10, 2);
-            $table->float('total', 10, 2);
+            $table->integer('invoice_number');
+            $table->date('due_date');
+            $table->float('invoice_total');
+            $table->float('total_paid');
+            $table->float('total_due');
             $table->integer('status');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_payments');
+        Schema::dropIfExists('invoices');
     }
 };
