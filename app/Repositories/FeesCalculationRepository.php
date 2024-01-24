@@ -91,12 +91,12 @@ private function processSurcharges($monthlyPaymentEligibleLists, $dueDate, $dueD
 
     private function getSurchageEligibilitys($monthlyPaymentEligibleList, $dueDateThreshold)
     {
-
+        
         return AccountPayable::where('student_id', $monthlyPaymentEligibleList->student_id)
             ->where('eligibility', 1)
             ->where('status', 0)
             ->where('type', 'monthly')
-            ->whereBetween('due_date', [$dueDateThreshold->format('Y-m-d'), '2023-12-10'])
+            ->whereBetween('due_date', [$dueDateThreshold->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
             ->get();     
     }
 
@@ -156,23 +156,56 @@ private function processSurcharges($monthlyPaymentEligibleLists, $dueDate, $dueD
 
 
     public function user_payments($id){
-        $query = AccountPayable::where('student_id',$id)->where('status',0)->get(); 
+        $query = AccountPayable::where('invoice_number',$id)->get(); 
         return $query;
     }
 
     public function user_payment_update(array $data)
     {
-        foreach ($data as $invoiceData) {
+        
+        $selectedInvoices = $data['selectedInvoices'];
+
+        foreach ($selectedInvoices as $invoiceData) {
             StudentPayment::create([
-                'invoiceId' => $invoiceData['invoiceId'],
+                'invoice_id' => $invoiceData['invoice_id'],
+                'admission_no' => $invoiceData['admission_id'],
                 'date' => $invoiceData['date'],
-                'dueDate' => $invoiceData['dueDate'],
-                'outstandingBalance' => $invoiceData['outstandingBalance'],
+                'due_date' => $invoiceData['due_date'],
+                'outstanding_balance' => $invoiceData['outstanding_balance'],
                 'total' => $invoiceData['total'],
+                'total_due' => ($invoiceData['total'] + $invoiceData['outstanding_balance']),
+                'status' => 1,
             ]);
+            $this->updateAccountPaymentTable($invoiceData['describe']);
+
         }
     }
     
+    private function updateAccountPaymentTable($invoiceDataArray){
+
+
+            DB::beginTransaction();
+
+        try {
+            foreach ($invoiceDataArray as $invoiceData) {
+                if ($invoiceData['payment_status'] == 'paid') {
+                    AccountPayable::where('id', $invoiceData['id'])
+                        ->update(['status' => 1, 'outstanding_balance' => $invoiceData['outstanding_balance']]);
+                } else {
+                    AccountPayable::where('id', $invoiceData['id'])
+                        ->update(['status' => 2, 'outstanding_balance' => $invoiceData['outstanding_balance']]);
+                }
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Handle the exception as needed
+            throw $e;
+        }
+        
+    }
+
     public function prepareForDB(array $data, ?StudentPayment $master_class = null): array
     {
         return [
@@ -267,6 +300,7 @@ public function current_user_pay(array $data)
         $invoiceDataArray[] = [
             'invoice_id' => $invoice->invoice_number,
             'total' => $totalAmount,
+            'admission_no' => $admissionId,
             'due_date' => $dueDate,
             'describe' => $describeData,
             'invoice_status' => $invoiceStatus,
@@ -282,9 +316,26 @@ public function current_user_pay(array $data)
     return $responseData;
 }
 
-    public function all_user_pay(array $data){
-        echo  'mac';
-    }
+public function all_user_pay(array $data) {
+    $admissionId = $data['admission_id'];
+    $class = $data['sd_year_grade_class_id'];
+
+    // Assuming you have a direct relationship between StudentDetail and Invoice
+
+    $studentDetails = StudentDetail::with('StudentPayment')
+    ->where('sd_admission_no', $admissionId)
+    ->where('sd_year_grade_class_id', $class)
+    ->get();
+
+
+
+    return $studentDetails;
+}
+
+
+
+
+
 
 
 

@@ -43,7 +43,7 @@ class FeesCalculationController extends Controller
     public function user_payment_update(UserPaymentCreateRequest $request): JsonResponse
     {
         try {
-            return $this->responseSuccess($this->feescalculationRepository->user_payment_update($request->all()), 'User update successfully.');
+            return $this->responseSuccess($this->feescalculationRepository->user_payment_update($request->all()), 'Payment successfully.');
         } catch (Exception $exception) {
             return $this->responseError([], $exception->getMessage(), $exception->getCode());
         } 
@@ -64,7 +64,7 @@ class FeesCalculationController extends Controller
         }
 
 
-        public function all_user_pay(Request $request): JsonResponse
+        public function all_user_payments(Request $request): JsonResponse
         {
             
             try {

@@ -11,5 +11,10 @@ class AccountPayable extends Model
     protected $connection = 'student_service';
     protected $fillable = ['invoice_number','admission_no','outstanding_balance', 'amount', 'type', 'due_date', 'eligibility', 'status'];
 
+    public function studentDetails()
+    {
+        return $this->hasMany(StudentDetail::class, 'sd_admission_no', 'admission_no');
+    }
+
     
 }
