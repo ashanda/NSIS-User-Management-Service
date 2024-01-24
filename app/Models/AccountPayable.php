@@ -9,7 +9,12 @@ class AccountPayable extends Model
 {
     use HasFactory;
     protected $connection = 'student_service';
-    protected $fillable = ['student_id', 'amount', 'type', 'eligibility', 'status'];
+    protected $fillable = ['invoice_number','admission_no','outstanding_balance', 'amount', 'type', 'due_date', 'eligibility', 'status'];
+
+    public function studentDetails()
+    {
+        return $this->hasMany(StudentDetail::class, 'sd_admission_no', 'admission_no');
+    }
 
     
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeesCalculationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PermissionController;
@@ -54,9 +55,19 @@ Route::middleware('auth:api')->group(function () {
     // end point of calculation
     Route::get('/generate_monthly_fee', [FeesCalculationController::class, 'monthly_fee']);
     Route::get('/generate_surcharge_fee', [FeesCalculationController::class, 'surcharge_fee']);
-    Route::get('/user_payments/{id}', [FeesCalculationController::class, 'user_payments']);
+    Route::get('/user_single_invoice/{id}', [FeesCalculationController::class, 'user_payments']);
+
+    Route::post('/user_payments', [FeesCalculationController::class, 'user_payment_update']);
+
+    Route::get('/user_invoices', [FeesCalculationController::class, 'current_user_pay']);
+
+    Route::post('/all_user_payments', [FeesCalculationController::class, 'all_user_payments']);
 
     Route::apiResource('/student_payments', StudentPaymentController::class);
+
+    Route::get('/logged_user', [AuthController::class, 'logged_user']);
+
+  
 
     
     
