@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::connection('student_service')->create('student_payments', function (Blueprint $table) {
             $table->id();
-            $table->string('invoice_id');
+            $table->string('payment_id');
+            $table->string('admission_no');
+            $table->json('invoice_id');
             $table->date('date');
             $table->date('due_date');
-            $table->float('outstanding_balance', 10, 2);
-            $table->float('total', 10, 2);
             $table->float('total_due', 10, 2);
             $table->integer('status');
             $table->timestamps();

@@ -11,7 +11,7 @@ use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Str;
 class FeesCalculationRepository implements FeesCalculationInterface {
     public function monthlyFee()
     {
@@ -72,19 +72,24 @@ private function processSurcharges($monthlyPaymentEligibleLists, $dueDate, $dueD
 
         $surchageEligibilitys = $this->getSurchageEligibilitys($monthlyPaymentEligibleList, $dueDateThreshold);
         $count = $surchageEligibilitys->count();
+        
+        if($count == 0){
+            $this->createMonthlyPaymentRecord($monthlyPaymentEligibleList, $dueDate, $invoice_number);
+        }else{
+            foreach ($surchageEligibilitys as $surchageEligibility) {
+                $userId = $surchageEligibility->student_id;
 
-        foreach ($surchageEligibilitys as $surchageEligibility) {
-            $userId = $surchageEligibility->student_id;
-
-            // Check if the user has already been processed
-            if (!in_array($userId, $processedUsers)) {
-                $this->createSurchargeRecord($surchageEligibility, $count, $dueDate, $invoice_number);
-                // Mark the user as processed
-                $processedUsers[] = $userId;
-                // Create monthly payment record
-                 $this->createMonthlyPaymentRecord($monthlyPaymentEligibleList, $dueDate, $invoice_number);
+                // Check if the user has already been processed
+                if (!in_array($userId, $processedUsers)) {
+                    $this->createSurchargeRecord($surchageEligibility, $count, $dueDate, $invoice_number);
+                    // Mark the user as processed
+                    $processedUsers[] = $userId;
+                    // Create monthly payment record
+                    $this->createMonthlyPaymentRecord($monthlyPaymentEligibleList, $dueDate, $invoice_number);
+                }
             }
         }
+        
     }
 }
 
@@ -92,7 +97,7 @@ private function processSurcharges($monthlyPaymentEligibleLists, $dueDate, $dueD
     private function getSurchageEligibilitys($monthlyPaymentEligibleList, $dueDateThreshold)
     {
         
-        return AccountPayable::where('student_id', $monthlyPaymentEligibleList->student_id)
+        return AccountPayable::where('admission_no', $monthlyPaymentEligibleList->sd_admission_no)
             ->where('eligibility', 1)
             ->where('status', 0)
             ->where('type', 'monthly')
@@ -128,7 +133,7 @@ private function processSurcharges($monthlyPaymentEligibleLists, $dueDate, $dueD
             //Create surcharge record
             AccountPayable::create([
                 'invoice_number' => $invoice_number,
-                'student_id' => $surchageEligibility->student_id,
+                'admission_no' => $surchageEligibility->sd_admission_no,
                 'amount' => $surchargeAmount,
                 'type' => 'surcharge',
                 'eligibility' => 1,
@@ -143,7 +148,7 @@ private function processSurcharges($monthlyPaymentEligibleLists, $dueDate, $dueD
     {
         AccountPayable::create([
             'invoice_number' => $invoice_number,
-            'student_id' => $monthlyPaymentEligibleList->student_id,
+            'admission_no' => $monthlyPaymentEligibleList->sd_admission_no,
             'amount' => $monthlyPaymentEligibleList->yearGradeClass->monthly_fee,
             'type' => 'monthly',
             'eligibility' => 1,
@@ -163,41 +168,98 @@ private function processSurcharges($monthlyPaymentEligibleLists, $dueDate, $dueD
     public function user_payment_update(array $data)
     {
         
-        $selectedInvoices = $data['selectedInvoices'];
+        $current_amount = $data['selectedInvoices'][0]['payment_amount'];
+        $current_user_invoice = Invoice::where('admission_no', $data['selectedInvoices'][0]['admission_id'])->whereIn('status', [0, 2])->get();
 
-        foreach ($selectedInvoices as $invoiceData) {
-            StudentPayment::create([
-                'invoice_id' => $invoiceData['invoice_id'],
-                'admission_no' => $invoiceData['admission_id'],
-                'date' => $invoiceData['date'],
-                'due_date' => $invoiceData['due_date'],
-                'outstanding_balance' => $invoiceData['outstanding_balance'],
-                'total' => $invoiceData['total'],
-                'total_due' => ($invoiceData['total'] + $invoiceData['outstanding_balance']),
-                'status' => 1,
-            ]);
-            $this->updateAccountPaymentTable($invoiceData['describe']);
+        $studentPayment = new StudentPayment();
+        $paymentId = Str::uuid();
+        $invoiceNumbers = [];
 
+        foreach ($current_user_invoice as $invoice) {
+            // Check if there's enough amount to cover the current invoice
+            if ($current_amount >= $invoice->invoice_total) {
+                // If there's enough amount, deduct the invoice total from the current amount
+                $current_amount -= $invoice->invoice_total;
+              
+                
+                $outstanding_balance = 0; // No balance remaining
+                $status = 1;
+                // Update the status to 1 (fully paid)
+                $invoice->update(['status' => 1]);
+            } else {
+                // If the current amount is not enough to cover the entire invoice
+                // Store the partial payment in the total_due column 
+                // Update the status to 2 (partial payment)
+                
+                
+                $outstanding_balance = $invoice->invoice_total - $current_amount;
+                
+                 // No amount remaining
+                 $status = 2;
+                // Update the status to 2 (partial payment)
+                 $invoice->update(['status' => 2, 'total_paid' => $current_amount]);
+            }
+
+            $invoiceNumbers[] = $invoice->invoice_number;
+            
+            $this->updateAccountPaymentTable($data['selectedInvoices'][0]['admission_id'],$current_amount,$status,$data['selectedInvoices'][0]['payment_amount']);
         }
+
+        $invoiceNumbersString = json_encode($invoiceNumbers);
+
+       // Create a new student payment record for all invoices
+        $studentPayment->create([
+            'payment_id' => $paymentId,
+            'invoice_id' => $invoiceNumbersString,
+            'admission_no' => $current_user_invoice->first()->admission_no,
+            'date' => now(),
+            'due_date' => $current_user_invoice->first()->due_date,
+            'total_due' => $data['selectedInvoices'][0]['payment_amount'],
+            'status' => 1,
+        ]);
+                            
+             
+        
+
+
+
+            
+
+        
     }
     
-    private function updateAccountPaymentTable($invoiceDataArray){
+    private function updateAccountPaymentTable($admission_id,$current_amount,$status,$current_payment){
 
 
             DB::beginTransaction();
 
-        try {
-            foreach ($invoiceDataArray as $invoiceData) {
-                if ($invoiceData['payment_status'] == 'paid') {
-                    AccountPayable::where('id', $invoiceData['id'])
-                        ->update(['status' => 1, 'outstanding_balance' => $invoiceData['outstanding_balance']]);
-                } else {
-                    AccountPayable::where('id', $invoiceData['id'])
-                        ->update(['status' => 2, 'outstanding_balance' => $invoiceData['outstanding_balance']]);
-                }
-            }
+        try {   
+                $current_invoice_related_data = AccountPayable::where('admission_no', $admission_id )->where('status',0)->get();
+                $invoiceData = $current_invoice_related_data->map(function ($invoice) {
+                return [
+                    'id' => $invoice->id,
+                    'amount' => $invoice->amount,
+                    'type' => $invoice->type,
+                ];
+            })->toArray();
+             foreach ($invoiceData as $invoice) {
+                    if ($invoice['amount'] <= $current_payment) {
+                        // Update the record to status 1
+                        AccountPayable::where('id', $invoice['id'])->update(['status' => 1]);
+                    } else {
+                        // Update the record partially to status 2
+                        AccountPayable::where('id', $invoice['id'])->update(['status' => 2]);
 
-            DB::commit();
+                        // You can also store the remaining amount in the database or use it for further processing
+                        $remaining_amount = $invoice['amount'] - $current_payment;
+                        // ... do something with $remaining_amount if needed
+                    }
+                }
+             
+             
+
+
+             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             // Handle the exception as needed
@@ -219,101 +281,14 @@ private function processSurcharges($monthlyPaymentEligibleLists, $dueDate, $dueD
 public function current_user_pay(array $data)
 {
         $admissionId = $data['admission_id'];
-        $amount = $data['amount'];
         $date = $data['date'];
-        
-    // Assuming you have a relationship between users and invoices, adjust this based on your actual relationship
-    $invoices = AccountPayable::where('admission_no', $admissionId)
-        ->where('status', 0) // Assuming 0 means unpaid
-        ->where('due_date','<', $date)
-        ->select('invoice_number', DB::raw('SUM(amount) as total_amount'), DB::raw('SUM(outstanding_balance) as total_outstanding_balance'), 'due_date', 'status')
-        ->groupBy('invoice_number', 'due_date', 'status')
+        // Assuming you have a relationship between users and invoices, adjust this based on your actual relationship
+        $invoices = Invoice::where('admission_no', $admissionId)
+        ->whereIn('status', [0, 2]) // Assuming 0 means unpaid
+        ->where('due_date', '<', $date)
         ->get();
 
-    // If you want to process each invoice separately
-    $invoiceDataArray = [];
-    foreach ($invoices as $invoice) {
-        $totalAmount = $invoice->total_amount;
-        $dueDate = $invoice->due_date;
-        $current_date = Carbon::now()->format('Y-m-d');
-        $describeData = [];
-        // Assuming you have a relationship between invoices and details, adjust this based on your actual relationship
-        $invoiceDetails = AccountPayable::where('invoice_number', $invoice->invoice_number)->where('status', 0)->get();
-
-        $paidAmount = 0;
-        $outstandingBalance = 0; // Initialize outstanding balance for the entire invoice
-
-        foreach ($invoiceDetails as $index => $detail) {
-            $paymentStatus = 'unpaid';
-            $detailOutstandingBalance = $detail->amount;
-
-            if ($amount >= $detailOutstandingBalance) {
-                $paymentStatus = 'paid';
-                $amount -= $detailOutstandingBalance;
-                $detailOutstandingBalance = 0;
-            } elseif ($amount > 0) {
-                $paymentStatus = 'partially paid';
-                $detailOutstandingBalance -= $amount;
-                $amount = 0;
-            }
-
-            $describeData[] = [
-                'id' => $detail->id,
-                'type' => $detail->type,
-                'amount' => $detail->amount,
-                'payment_status' => $paymentStatus,
-                'outstanding_balance' => $detailOutstandingBalance, // Represent the outstanding balance as a negative value for partially paid charges
-                'created_at' => $detail->created_at,
-                'updated_at' => $detail->updated_at,
-            ];
-
-            // Calculate the paid amount for each detail
-            $paidAmount += $detail->amount;
-            // Aggregate the outstanding balance for the entire invoice
-            $outstandingBalance += $detailOutstandingBalance;
-        }
-
-        // Check if there are any unpaid or partially paid charges
-        $hasUnpaidCharge = false;
-        $hasPartiallyPaidCharge = false;
-
-        foreach ($describeData as $charge) {
-            if ($charge['payment_status'] === 'unpaid') {
-                $hasUnpaidCharge = true;
-            } elseif ($charge['payment_status'] === 'partially paid') {
-                $hasPartiallyPaidCharge = true;
-            }
-        }
-
-        // Set the invoice status based on the payment status of charges
-        if ($hasPartiallyPaidCharge) {
-            $invoiceStatus = 'partially paid';
-        } elseif ($hasUnpaidCharge) {
-            $invoiceStatus = 'unpaid';
-        } else {
-            $invoiceStatus = 'paid';
-        }
-
-        // Calculate the outstanding balance for the entire invoice
-        $outstandingBalance = ($outstandingBalance < 0) ? 0 : $outstandingBalance;
-
-        $invoiceDataArray[] = [
-            'invoice_id' => $invoice->invoice_number,
-            'total' => $totalAmount,
-            'admission_no' => $admissionId,
-            'due_date' => $dueDate,
-            'describe' => $describeData,
-            'invoice_status' => $invoiceStatus,
-            'outstanding_balance' => -$outstandingBalance, // Represent the outstanding balance as a negative value for the entire invoice
-            'current_date' => $current_date,
-        ];
-    }
-
-    $responseData = [
-        'invoice_data' => $invoiceDataArray,
-    ];
-
-    return $responseData;
+    return $invoices;
 }
 
 public function all_user_pay(array $data) {
@@ -332,7 +307,32 @@ public function all_user_pay(array $data) {
     return $studentDetails;
 }
 
+    public function invoice_generate()
+        {
+            $currentDate = Carbon::now();
+            $dueDate = $currentDate->copy()->addMonth();
 
+            $uniqueInvoices = AccountPayable::where('status', 0)
+                ->select('invoice_number', DB::raw('SUM(amount) as amount'),'admission_no')
+                ->groupBy('invoice_number','admission_no')
+                ->get();
+
+            foreach ($uniqueInvoices as $uniqueInvoice) {
+                Invoice::updateOrCreate(
+                    ['invoice_number' => $uniqueInvoice->invoice_number],
+                    [
+                        'admission_no' => $uniqueInvoice->admission_no,
+                        'due_date' => $dueDate,
+                        'invoice_total' => $uniqueInvoice->amount,
+                        'total_paid' => 0,
+                        'total_due' => 0,
+                        'status' => 0,
+                    ]
+                );
+            }
+
+            return $uniqueInvoices;
+    }
 
 
 

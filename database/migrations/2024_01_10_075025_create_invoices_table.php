@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoices', function (Blueprint $table) {
-            $table->id();
-            $table->integer('invoice_number');
-            $table->date('due_date');
-            $table->float('invoice_total');
-            $table->float('total_paid');
-            $table->float('total_due');
-            $table->integer('status');
-            $table->timestamps();
+        Schema::connection('student_service')->create('invoices', function (Blueprint $table) {
+                $table->id();
+                $table->string('invoice_number'); // Change the data type to string
+                $table->string('admission_no');
+                $table->date('due_date');
+                $table->float('invoice_total');
+                $table->float('total_paid');
+                $table->float('total_due');
+                $table->integer('status');
+                $table->timestamps();
         });
     }
 

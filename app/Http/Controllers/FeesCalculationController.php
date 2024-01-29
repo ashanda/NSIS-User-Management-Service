@@ -20,17 +20,7 @@ class FeesCalculationController extends Controller
         $this->feescalculationRepository = $feescalculationRepository;
     }
 
-    public function monthly_fee(): JsonResponse
-    {
-        try {
-            return $this->responseSuccess($this->feescalculationRepository->monthlyFee(), 'Monthly fee generate successfully.');
-        } catch (Exception $exception) {
-            return $this->responseError([], $exception->getMessage(), $exception->getCode());
-        }
-    }
-
-
-
+    
     public function user_payments($id): JsonResponse
     {
         try {
