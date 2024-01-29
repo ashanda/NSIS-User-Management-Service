@@ -76,4 +76,14 @@ class StudentDetail extends Model
     {
         return $this->belongsTo(YearGradeClass::class, 'sd_year_grade_class_id', 'id');
     }
+
+    public function studentDetail()
+    {
+        return $this->hasMany(AccountPayable::class, 'student_id', 'student_id');
+    }
+    
+    public function StudentPayment()
+    {
+        return $this->hasMany(StudentPayment::class, 'admission_no', 'sd_admission_no');
+    }
 }

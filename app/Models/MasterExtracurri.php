@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class MasterExtracurri extends Model
 {
     use HasFactory;
+    protected $connection = 'core_service';
+    protected $fillable = [
+        'organization_id',
+        'extracurricular_name',
+
+    ];
+
 }

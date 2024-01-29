@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::connection('student_service')->create('account_payables', function (Blueprint $table) {
             $table->id();
-            $table->string('student_id');
+            $table->string('invoice_number');
+            $table->string('admission_no');
             $table->float('amount');
             $table->string('type')->comment('surcharge or monthly');
+            $table->date('due_date');
+            $table->float('outstanding_balance');
             $table->integer('eligibility')->comment('1 = true / 0 = false');
             $table->integer('status')->comment('1 = paid / 0 = unpaid');
             $table->timestamps();

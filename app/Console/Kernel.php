@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Artisan;
 
 class Kernel extends ConsoleKernel
 {
@@ -12,7 +13,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+            // Monthly fee calculation
+        $schedule->call(function () {
+            Artisan::call('fees:monthly-calculation');
+        })->monthlyOn(31, '00:00');
+
+        // Invoice generation
+        $schedule->call(function () {
+            Artisan::call('fees:invoice-generate');
+        })->monthlyOn(31, '00:05');
     }
 
     /**
