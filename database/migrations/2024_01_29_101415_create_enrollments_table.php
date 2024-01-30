@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::connection('student_service')->create('enrollments', function (Blueprint $table) {
             $table->id();
-            $table->string('student_id');
+            $table->string('admission_id');
             $table->integer('grade_class_id');
             $table->string('first_name');
             $table->string('last_name')->nullable();

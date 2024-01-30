@@ -33,6 +33,14 @@ class UserController extends Controller
         }
     }
 
+    public function student_lists(): JsonResponse
+    {
+        try {
+            return $this->responseSuccess($this->userRepository->studentLists(request()->all()), 'Student lists fetched successfully.');
+        } catch (Exception $exception) {
+            return $this->responseError([], $exception->getMessage(), $exception->getCode());
+        }
+    }
     
     public function store(UserCreateRequest $request): JsonResponse
     {

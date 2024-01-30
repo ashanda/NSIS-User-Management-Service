@@ -10,7 +10,7 @@ class Enrollment extends Model
     use HasFactory;
     protected $connection = 'student_service';
     protected $fillable = [
-        'student_id',
+        'admission_id',
         'grade_class_id',
         'first_name',
         'last_name',

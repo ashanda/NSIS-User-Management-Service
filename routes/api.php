@@ -75,6 +75,10 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/logged_user', [AuthController::class, 'logged_user']);
 
+
+    //Reports
+    Route::get('/student-lists',[UserController::class, 'student_lists']);
+    
   
 
     
