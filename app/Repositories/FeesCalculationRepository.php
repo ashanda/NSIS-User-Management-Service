@@ -290,22 +290,50 @@ public function current_user_pay(array $data)
 
     return $invoices;
 }
-
 public function all_user_pay(array $data) {
     $admissionId = $data['admission_id'];
     $class = $data['sd_year_grade_class_id'];
-
+    $date = $data['date'];
     // Assuming you have a direct relationship between StudentDetail and Invoice
-
     $studentDetails = StudentDetail::with('StudentPayment')
-    ->where('sd_admission_no', $admissionId)
-    ->where('sd_year_grade_class_id', $class)
-    ->get();
+        ->where('sd_admission_no', $admissionId)
+        ->where('sd_year_grade_class_id', $class)
+        ->get();
 
+    $formattedData = [];
 
+    foreach ($studentDetails as $studentDetail) {
+        $formattedStudent = $studentDetail->toArray();
 
-    return $studentDetails;
+        // Separate invoice_id array and retrieve related data
+        $invoiceIds = json_decode($formattedStudent['student_payment'][0]['invoice_id'], true);
+
+        $invoices = Invoice::whereIn('invoice_number', $invoiceIds)->where('due_date','<',$date)->get();
+
+        $formattedInvoices = [];
+        foreach ($invoices as $invoice) {
+            $formattedInvoice = $invoice->toArray();
+
+            $invoice_items = AccountPayable::where('invoice_number', $invoice->invoice_number)->get();
+
+            $formattedInvoice['invoice_items'] = $invoice_items->toArray();
+
+            $formattedInvoices[] = $formattedInvoice;
+        }
+
+        // Move invoices into the student_payment array
+        $formattedStudent['student_payment'][0]['invoices'] = $formattedInvoices;
+
+        // Remove the original invoice_id field
+        unset($formattedStudent['student_payment'][0]['invoice_id']);
+
+        $formattedData[] = $formattedStudent;
+    }
+
+    return  $formattedData;
 }
+
+
 
     public function invoice_generate()
         {
