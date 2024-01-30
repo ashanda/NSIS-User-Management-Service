@@ -35,14 +35,7 @@ class UserEnrollmentRepository implements EnrollmentInterface {
 
     public function getById($id): ?Enrollment
     {
-       $student = Enrollment::with('parent_data')
-        ->with('sibling_data')
-        ->with('documents')
-        ->with(['year_class_data' => function ($query) {
-            $query->with(['grade', 'class']);
-        }])
-        ->where('student_id', $id)
-        ->first();
+       $student = Enrollment::where('admission_id', $id)->first();
 
         if (empty($student)) {
             throw new Exception("User student does not exist.", Response::HTTP_NOT_FOUND);
@@ -60,8 +53,7 @@ class UserEnrollmentRepository implements EnrollmentInterface {
     public function update(array $data, $studentId): ?object 
     {
         // Fetch existing records
-        $studentDetails = Enrollment::where('student_id',$studentId)->first();
-
+        $studentDetails = Enrollment::where('admission_id',$studentId)->first();
 
         // Check if any of the models is null
         if ($studentDetails === null ) {
@@ -71,11 +63,8 @@ class UserEnrollmentRepository implements EnrollmentInterface {
         // Update the existing records with the new data
         $studentDetails->update($data);
 
-
         // Fetch the updated records (optional, depending on your needs)
         $studentDetail = Enrollment::find($studentDetails->id);
-
-
         return $studentDetail;
     }
 

@@ -6,6 +6,7 @@ use Exception;
 use App\Interfaces\DBPreparableInterface;
 use App\Models\User;
 use App\Interfaces\UserInterface ;
+use App\Models\StudentDetail;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\PersonalAccessTokenResult;
@@ -28,6 +29,21 @@ class UserRepository implements UserInterface, DBPreparableInterface {
         return $query;
     }
 
+    public function studentLists(array $filterData)
+    {
+        $filter = $this->getFilterData($filterData);
+        $query = StudentDetail::get(); 
+        // $query = UserLevel::orderBy($filter['orderBy'], $filter['order']);
+
+        // if (!empty($filter['search'])) {
+        //     $query->where(function ($query) use ($filter) {
+        //         $searched = '%' . $filter['search'] . '%';
+        //         $query->where('level', 'like', $searched)
+        //         ->orWhere('title', 'like', $searched);
+        //     });
+        // }
+        return $query;
+    }
     public function getFilterData(array $filterData): array
     {
         $defaultArgs = [
